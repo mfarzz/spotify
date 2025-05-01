@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? const CircularProgressIndicator(color: Colors.white)
                         : ElevatedButton(
                           onPressed:
-                              _handleGoogleSignIn, // Changed to use the auth service
+                              _handleGoogleSignIn,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(

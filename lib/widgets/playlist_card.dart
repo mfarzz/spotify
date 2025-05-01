@@ -18,7 +18,7 @@ class PlaylistCard extends StatelessWidget {
       onTap: onTap,
       child: SizedBox(
         width: 150,
-        height: 180, // Memberikan tinggi tetap yang cukup
+        height: 180, 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,7 +27,7 @@ class PlaylistCard extends StatelessWidget {
               child: Image.asset(
                 imageUrl,
                 width: 150,
-                height: 150, // Mengurangi tinggi gambar sedikit
+                height: 150,
                 fit: BoxFit.cover,
               ),
             ),
@@ -39,7 +39,7 @@ class PlaylistCard extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14, // Mengurangi ukuran font
+                  fontSize: 14,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
