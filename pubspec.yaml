@@ -69,6 +69,7 @@ flutter:
     - assets/song3.jpg
     - assets/song4.jpg
     - assets/spotify_logo.png
+    - assets/profile.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

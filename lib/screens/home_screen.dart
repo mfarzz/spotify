@@ -4,6 +4,7 @@ import 'package:spotify/widgets/music_card.dart';
 import 'package:spotify/widgets/playlist_card.dart';
 import 'package:spotify/screens/playlist_screen.dart';
 import 'package:spotify/screens/playlist_detail_screen.dart';
+import 'package:spotify/screens/account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,141 +41,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Container(
-        color: darkGrey,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Recently played section
-                const Text(
-                  'Recently played',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 180,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      PlaylistCard(
-                        imageUrl: 'assets/playlist1.jpg',
-                        title: 'Daily Mix 1',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PlaylistScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(width: 16),
-                      PlaylistCard(
-                        imageUrl: 'assets/playlist2.jpg',
-                        title: 'Discover Weekly',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PlaylistScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(width: 16),
-                      PlaylistCard(
-                        imageUrl: 'assets/playlist3.jpg',
-                        title: 'Chill Hits',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const PlaylistDetailScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(width: 16),
-                      PlaylistCard(
-                        imageUrl: 'assets/playlist4.jpg',
-                        title: 'Rock Classics',
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Made for you section
-                const Text(
-                  'Made for you',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.8,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  children: [
-                    _buildCategoryCard('Daily Mix 1', 'assets/mix1.jpg'),
-                    _buildCategoryCard('Daily Mix 2', 'assets/mix2.jpg'),
-                    _buildCategoryCard('Daily Mix 3', 'assets/mix3.jpg'),
-                    _buildCategoryCard('Daily Mix 4', 'assets/mix4.jpg'),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                // Recently played tracks
-                const Text(
-                  'Recently played tracks',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Column(
-                  children: [
-                    MusicCard(
-                      imageUrl: 'assets/song1.jpg',
-                      title: 'Blinding Lights',
-                      artist: 'The Weeknd',
-                      onTap: () {},
+      body: _currentIndex == 0
+          ? _buildHomeBody()
+          : _currentIndex == 3
+              ? const AccountScreen()
+              : Center(
+                  child: Text(
+                    _currentIndex == 1 ? 'Search Page' : 'Your Library',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    MusicCard(
-                      imageUrl: 'assets/song2.jpg',
-                      title: 'Save Your Tears',
-                      artist: 'The Weeknd',
-                      onTap: () {},
-                    ),
-                    MusicCard(
-                      imageUrl: 'assets/song3.jpg',
-                      title: 'Stay',
-                      artist: 'The Kid LAROI, Justin Bieber',
-                      onTap: () {},
-                    ),
-                  ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -195,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
-            label: 'Premium',
+            label: 'Account',
           ),
         ],
       ),
@@ -232,6 +112,140 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHomeBody() {
+    return Container(
+      color: darkGrey,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Recently played',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 180,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    PlaylistCard(
+                      imageUrl: 'assets/playlist1.jpg',
+                      title: 'Daily Mix 1',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PlaylistScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 16),
+                    PlaylistCard(
+                      imageUrl: 'assets/playlist2.jpg',
+                      title: 'Discover Weekly',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PlaylistScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 16),
+                    PlaylistCard(
+                      imageUrl: 'assets/playlist3.jpg',
+                      title: 'Chill Hits',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const PlaylistDetailScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 16),
+                    PlaylistCard(
+                      imageUrl: 'assets/playlist4.jpg',
+                      title: 'Rock Classics',
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Made for you',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                childAspectRatio: 1.8,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: [
+                  _buildCategoryCard('Daily Mix 1', 'assets/mix1.jpg'),
+                  _buildCategoryCard('Daily Mix 2', 'assets/mix2.jpg'),
+                  _buildCategoryCard('Daily Mix 3', 'assets/mix3.jpg'),
+                  _buildCategoryCard('Daily Mix 4', 'assets/mix4.jpg'),
+                ],
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Recently played tracks',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Column(
+                children: [
+                  MusicCard(
+                    imageUrl: 'assets/song1.jpg',
+                    title: 'Blinding Lights',
+                    artist: 'The Weeknd',
+                    onTap: () {},
+                  ),
+                  MusicCard(
+                    imageUrl: 'assets/song2.jpg',
+                    title: 'Save Your Tears',
+                    artist: 'The Weeknd',
+                    onTap: () {},
+                  ),
+                  MusicCard(
+                    imageUrl: 'assets/song3.jpg',
+                    title: 'Stay',
+                    artist: 'The Kid LAROI, Justin Bieber',
+                    onTap: () {},
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
