@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 <<<<<<< Updated upstream
 class AuthService {
@@ -13,33 +14,31 @@ class AuthService extends ChangeNotifier {
   ValueNotifier<bool?> get authStateNotifier => _authStateNotifier;
 >>>>>>> Stashed changes
 
-  AuthService()
-    : _supabaseClient = Supabase.instance.client,
-      _googleSignIn = GoogleSignIn(
-        scopes: ['email', 'profile'],
-        serverClientId:
-            '937546084944-pplck6kppui7efj78b8k2pk9r2aktbbt.apps.googleusercontent.com', // Untuk Android/iOS
-      );
+  GoogleSignInAccount? _googleUser;
 
-  // Method untuk login dengan Google
+  AuthService()
+      : _supabaseClient = Supabase.instance.client,
+        _googleSignIn = GoogleSignIn(
+          scopes: ['email', 'profile'],
+          serverClientId: dotenv.env['GOOGLE_CLIENT_ID']!,
+        );
+
   Future<User?> signInWithGoogle() async {
     try {
-      // Memulai proses sign in dengan Google
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null;
 
-      // Mendapatkan authentication data dari Google
+      _googleUser = googleUser; // Simpan user
+
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
 
-      // Sign in ke Supabase dengan credential Google
       final AuthResponse response = await _supabaseClient.auth
           .signInWithIdToken(
-            provider:
-                OAuthProvider.google, // Diubah dari Provider ke OAuthProvider
-            idToken: googleAuth.idToken!,
-            accessToken: googleAuth.accessToken,
-          );
+        provider: OAuthProvider.google,
+        idToken: googleAuth.idToken!,
+        accessToken: googleAuth.accessToken,
+      );
 
 <<<<<<< Updated upstream
       return response.user;
@@ -56,16 +55,16 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  // Method untuk logout
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     await _supabaseClient.auth.signOut();
+    _googleUser = null; // Reset juga
   }
 
-  // Get current user
   User? get currentUser => _supabaseClient.auth.currentUser;
 
-  // Stream untuk memantau perubahan auth state
+  GoogleSignInAccount? get googleUser => _googleUser; // Getter tambahan
+
   Stream<AuthState> get authStateChanges =>
       _supabaseClient.auth.onAuthStateChange;
 }
