@@ -1,9 +1,17 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+<<<<<<< Updated upstream
 class AuthService {
   final SupabaseClient _supabaseClient;
   final GoogleSignIn _googleSignIn;
+=======
+class AuthService extends ChangeNotifier {
+  Uri? _pendingDeepLink;
+  bool _isProcessingCallback = false; // Add this flag
+  final _authStateNotifier = ValueNotifier<bool?>(null);
+  ValueNotifier<bool?> get authStateNotifier => _authStateNotifier;
+>>>>>>> Stashed changes
 
   AuthService()
     : _supabaseClient = Supabase.instance.client,
@@ -33,7 +41,15 @@ class AuthService {
             accessToken: googleAuth.accessToken,
           );
 
+<<<<<<< Updated upstream
       return response.user;
+=======
+      // Process pending deep link if any
+      if (_pendingDeepLink != null) {
+        await _handleAuthCallback(_pendingDeepLink!);
+        _pendingDeepLink = null;
+      }
+>>>>>>> Stashed changes
     } catch (e) {
       print('Error during Google sign in: $e');
       return null;
