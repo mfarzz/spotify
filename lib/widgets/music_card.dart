@@ -17,10 +17,10 @@ class MusicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
         child: Row(
           children: [
             ClipRRect(
@@ -42,26 +42,23 @@ class MusicCard extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     artist,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: textGrey,
                       fontSize: 14,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.more_vert),
+            const Icon(
+              Icons.more_vert,
               color: textGrey,
-              onPressed: () {},
             ),
           ],
         ),

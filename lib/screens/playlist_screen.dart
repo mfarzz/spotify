@@ -1,120 +1,109 @@
 import 'package:flutter/material.dart';
 import 'package:spotify/constants.dart';
 import 'package:spotify/widgets/music_card.dart';
-import 'package:spotify/screens/playlist_detail_screen.dart';
 
 class PlaylistScreen extends StatelessWidget {
-  const PlaylistScreen({super.key});
+  final String playlistId;
+  
+  const PlaylistScreen({
+    super.key,
+    required this.playlistId,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // In a real app, fetch playlist data based on playlistId
+    final title = playlistId == 'mix1' ? 'Daily Mix 1' : 
+                  playlistId == 'discover' ? 'Discover Weekly' : 
+                  'Playlist';
+                  
+    final imageUrl = playlistId == 'mix1' ? 'assets/playlist1.jpg' : 
+                     playlistId == 'discover' ? 'assets/playlist2.jpg' :
+                     'assets/playlist3.jpg';
+
     return Scaffold(
       backgroundColor: darkGrey,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 300,
+            expandedHeight: 240,
+            pinned: true,
             backgroundColor: darkGrey,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                'assets/playlist1.jpg',
-                fit: BoxFit.cover,
-              ),
-            ),
-            pinned: true,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.more_vert),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              title: Text(title),
+              background: Stack(
+                fit: StackFit.expand,
                 children: [
-                  const Text(
-                    'Daily Mix 1',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  Image.asset(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black54,
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Made for you • Updated daily',
-                    style: TextStyle(
-                      color: textGrey,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.favorite_border,
-                        color: spotifyGreen,
-                      ),
-                      const SizedBox(width: 16),
-                      Icon(
-                        Icons.download_outlined,
-                        color: spotifyGreen,
-                      ),
-                      const SizedBox(width: 16),
-                      Icon(
-                        Icons.more_vert,
-                        color: spotifyGreen,
-                      ),
-                      const Spacer(),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: spotifyGreen,
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.play_arrow),
-                          color: Colors.black,
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    '50 songs • about 3 hr 15 min',
-                    style: TextStyle(
-                      color: textGrey,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Divider(color: lightGrey),
                 ],
               ),
             ),
           ),
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return MusicCard(
-                  imageUrl: 'assets/song${index % 4 + 1}.jpg',
-                  title: 'Song Title ${index + 1}',
-                  artist: 'Artist ${index + 1}',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PlaylistDetailScreen(),
+            delegate: SliverChildListDelegate([
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Songs',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                    );
-                  },
-                );
-              },
-              childCount: 15,
-            ),
+                    ),
+                    const SizedBox(height: 16),
+                    MusicCard(
+                      imageUrl: 'assets/song1.jpg',
+                      title: 'Blinding Lights',
+                      artist: 'The Weeknd',
+                      onTap: () {},
+                    ),
+                    MusicCard(
+                      imageUrl: 'assets/song2.jpg',
+                      title: 'Save Your Tears',
+                      artist: 'The Weeknd',
+                      onTap: () {},
+                    ),
+                    MusicCard(
+                      imageUrl: 'assets/song3.jpg',
+                      title: 'Stay',
+                      artist: 'The Kid LAROI, Justin Bieber',
+                      onTap: () {},
+                    ),
+                    MusicCard(
+                      imageUrl: 'assets/song1.jpg',
+                      title: 'Easy On Me',
+                      artist: 'Adele',
+                      onTap: () {},
+                    ),
+                    MusicCard(
+                      imageUrl: 'assets/song2.jpg',
+                      title: 'Bad Habits',
+                      artist: 'Ed Sheeran',
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+              ),
+            ]),
           ),
         ],
       ),
